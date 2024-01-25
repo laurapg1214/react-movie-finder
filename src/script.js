@@ -24,6 +24,7 @@ class MovieFinder extends React.Component {
     this.state = {
       searchTerm: '',
       results: [],
+      error: '',
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -50,15 +51,23 @@ class MovieFinder extends React.Component {
       }
       throw new Error('Request was either a 404 or 500');
     }).then((data) => {
-      // store the array of movie objects in the component state
-      this.setState({ results: data.Search });
+      // check for False response 
+      if (data.Response === 'False') {
+        throw new Error(data.Error);
+      }
+      // also checking for True response to be extra safe
+      if (data.Response === 'True' && data.Search) {
+        // store the array of movie objects in the component state
+        this.setState({ results: data.Search, error: '' });
+      }
     }).catch((error) => {
+      this.setState({ error: error.message });
       console.log(error);
     })
   }
 
   render() {
-    const { searchTerm, results } = this.state; // ES6 destructuring
+    const { searchTerm, results, error } = this.state; // ES6 destructuring
 
     return (
       <div className="container">
@@ -74,9 +83,14 @@ class MovieFinder extends React.Component {
               />
               <button type="submit" className="btn btn-primary">Submit</button>
             </form>
-            {results.map((movie) => {
+            {(() => {
+              if (error) {
+                return error;
+              }
+              return results.map((movie) => {
               return <Movie key={movie.imdbID} movie={movie} />; // returns Movie component for each movie in the .map() method
-            })}
+              })
+            })()}
           </div>
         </div>
       </div>

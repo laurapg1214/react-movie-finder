@@ -59,7 +59,8 @@ var MovieFinder = function (_React$Component) {
 
     _this.state = {
       searchTerm: '',
-      results: []
+      results: [],
+      error: ''
     };
 
     _this.handleChange = _this.handleChange.bind(_this);
@@ -94,9 +95,17 @@ var MovieFinder = function (_React$Component) {
         }
         throw new Error('Request was either a 404 or 500');
       }).then(function (data) {
-        // store the array of movie objects in the component state
-        _this2.setState({ results: data.Search });
+        // check for False response 
+        if (data.Response === 'False') {
+          throw new Error(data.Error);
+        }
+        // also checking for True response to be extra safe
+        if (data.Response === 'True' && data.Search) {
+          // store the array of movie objects in the component state
+          _this2.setState({ results: data.Search, error: '' });
+        }
       }).catch(function (error) {
+        _this2.setState({ error: error.message });
         console.log(error);
       });
     }
@@ -105,7 +114,8 @@ var MovieFinder = function (_React$Component) {
     value: function render() {
       var _state = this.state,
           searchTerm = _state.searchTerm,
-          results = _state.results; // ES6 destructuring
+          results = _state.results,
+          error = _state.error; // ES6 destructuring
 
       return React.createElement(
         "div",
@@ -132,9 +142,14 @@ var MovieFinder = function (_React$Component) {
                 "Submit"
               )
             ),
-            results.map(function (movie) {
-              return React.createElement(Movie, { key: movie.imdbID, movie: movie }); // returns Movie component for each movie in the .map() method
-            })
+            function () {
+              if (error) {
+                return error;
+              }
+              return results.map(function (movie) {
+                return React.createElement(Movie, { key: movie.imdbID, movie: movie }); // returns Movie component for each movie in the .map() method
+              });
+            }()
           )
         )
       );
