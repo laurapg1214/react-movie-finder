@@ -75,7 +75,7 @@ class MovieFinder extends React.Component {
               <button type="submit" className="btn btn-primary">Submit</button>
             </form>
             {results.map((movie) => {
-              return null; // for now
+              return <Movie key={movie.imdbID} movie={movie} />; // returns Movie component for each movie in the .map() method
             })}
           </div>
         </div>

@@ -133,7 +133,7 @@ var MovieFinder = function (_React$Component) {
               )
             ),
             results.map(function (movie) {
-              return null; // for now
+              return React.createElement(Movie, { key: movie.imdbID, movie: movie }); // returns Movie component for each movie in the .map() method
             })
           )
         )
