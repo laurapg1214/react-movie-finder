@@ -32,6 +32,8 @@ var MovieFinder = function (_React$Component) {
   }, {
     key: 'handleSubmit',
     value: function handleSubmit(event) {
+      var _this2 = this;
+
       event.preventDefault();
       var searchTerm = this.state.searchTerm; // ES6 destructuring
 
@@ -49,7 +51,8 @@ var MovieFinder = function (_React$Component) {
         }
         throw new Error('Request was either a 404 or 500');
       }).then(function (data) {
-        console.log(data); // for now - logs response data
+        // store the array of movie objects in the component state
+        _this2.setState({ results: data.Search });
       }).catch(function (error) {
         console.log(error);
       });

@@ -30,7 +30,8 @@ class MovieFinder extends React.Component {
       }
       throw new Error('Request was either a 404 or 500');
     }).then((data) => {
-      console.log(data); // for now - logs response data
+      // store the array of movie objects in the component state
+      this.setState({ results: data.Search });
     }).catch((error) => {
       console.log(error);
     })
