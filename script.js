@@ -6,6 +6,49 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var Movie = function Movie(props) {
+  var _props$movie = props.movie,
+      Title = _props$movie.Title,
+      Year = _props$movie.Year,
+      imdbID = _props$movie.imdbID,
+      Type = _props$movie.Type,
+      Poster = _props$movie.Poster; // ES6 destructuring
+
+  return React.createElement(
+    "div",
+    { className: "row" },
+    React.createElement(
+      "div",
+      { className: "col-4 col-md-3 mb-3" },
+      React.createElement(
+        "a",
+        { href: "https://www.imdb.com/title/" + imdbID + "/", target: "_blank" },
+        React.createElement("img", { src: Poster, className: "img-fluid" })
+      )
+    ),
+    React.createElement(
+      "div",
+      { className: "col-8 col-md-9 mb-3" },
+      React.createElement(
+        "a",
+        { href: "https://www.imdb.com/title/" + imdbID + "/", target: "_blank" },
+        React.createElement(
+          "h4",
+          null,
+          Title
+        ),
+        React.createElement(
+          "p",
+          null,
+          Type,
+          " | ",
+          Year
+        )
+      )
+    )
+  );
+};
+
 var MovieFinder = function (_React$Component) {
   _inherits(MovieFinder, _React$Component);
 
@@ -25,12 +68,12 @@ var MovieFinder = function (_React$Component) {
   }
 
   _createClass(MovieFinder, [{
-    key: 'handleChange',
+    key: "handleChange",
     value: function handleChange(event) {
       this.setState({ searchTerm: event.target.value });
     }
   }, {
-    key: 'handleSubmit',
+    key: "handleSubmit",
     value: function handleSubmit(event) {
       var _this2 = this;
 
@@ -44,7 +87,7 @@ var MovieFinder = function (_React$Component) {
       }
 
       // make the AJAX request to OMDBAPI to get list of results
-      fetch('https://www.omdbapi.com/?s=' + searchTerm + '&apikey=a7166dbe').then(function (response) {
+      fetch("https://www.omdbapi.com/?s=" + searchTerm + "&apikey=a7166dbe").then(function (response) {
         if (response.ok) {
           // .ok checks response 200-299
           return response.json();
@@ -58,35 +101,35 @@ var MovieFinder = function (_React$Component) {
       });
     }
   }, {
-    key: 'render',
+    key: "render",
     value: function render() {
       var _state = this.state,
           searchTerm = _state.searchTerm,
           results = _state.results; // ES6 destructuring
 
       return React.createElement(
-        'div',
-        { className: 'container' },
+        "div",
+        { className: "container" },
         React.createElement(
-          'div',
-          { className: 'row' },
+          "div",
+          { className: "row" },
           React.createElement(
-            'div',
-            { className: 'col-12' },
+            "div",
+            { className: "col-12" },
             React.createElement(
-              'form',
-              { onSubmit: this.handleSubmit, className: 'form-inline my-4' },
-              React.createElement('input', {
-                type: 'text',
-                className: 'form-control mr-sm-2',
-                placeholder: 'frozen',
+              "form",
+              { onSubmit: this.handleSubmit, className: "form-inline my-4" },
+              React.createElement("input", {
+                type: "text",
+                className: "form-control mr-sm-2",
+                placeholder: "frozen",
                 value: searchTerm,
                 onChange: this.handleChange
               }),
               React.createElement(
-                'button',
-                { type: 'submit', className: 'btn btn-primary' },
-                'Submit'
+                "button",
+                { type: "submit", className: "btn btn-primary" },
+                "Submit"
               )
             ),
             results.map(function (movie) {
