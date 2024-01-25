@@ -42,7 +42,7 @@ var MovieFinder = function (_React$Component) {
       }
 
       // make the AJAX request to OMDBAPI to get list of results
-      fetch('https://www.ombdapi.com/?s=' + searchTerm + '&apkey=a7166dbe').then(function (response) {
+      fetch('https://www.omdbapi.com/?s=' + searchTerm + '&apikey=a7166dbe').then(function (response) {
         if (response.ok) {
           // .ok checks response 200-299
           return response.json();
@@ -72,7 +72,7 @@ var MovieFinder = function (_React$Component) {
             { className: 'col-12' },
             React.createElement(
               'form',
-              { onSubmt: this.handleSubmit, className: 'form-inline my-4' },
+              { onSubmit: this.handleSubmit, className: 'form-inline my-4' },
               React.createElement('input', {
                 type: 'text',
                 className: 'form-control mr-sm-2',

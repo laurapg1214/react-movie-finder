@@ -23,7 +23,7 @@ class MovieFinder extends React.Component {
     }
 
     // make the AJAX request to OMDBAPI to get list of results
-    fetch(`https://www.ombdapi.com/?s=${searchTerm}&apkey=a7166dbe`).then((response) => {
+    fetch(`https://www.omdbapi.com/?s=${searchTerm}&apikey=a7166dbe`).then((response) => {
       if (response.ok) {
         // .ok checks response 200-299
         return response.json();
@@ -43,7 +43,7 @@ class MovieFinder extends React.Component {
       <div className="container">
         <div className="row">
           <div className="col-12">
-            <form onSubmt={this.handleSubmit} className="form-inline my-4">
+            <form onSubmit={this.handleSubmit} className="form-inline my-4">
               <input 
                 type="text" 
                 className="form-control mr-sm-2" 
