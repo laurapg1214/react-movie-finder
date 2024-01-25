@@ -15,18 +15,42 @@ class MovieFinder extends React.Component {
   }
 
   handleSubmit(event) {
-    event.preventDefault(); // for now
+    event.preventDefault(); 
+    let { searchTerm } = this.state; // ES6 destructuring
+    searchTerm = searchTerm.trim(); // clean the string
+    if (!searchTerm) { // make sure the value isn't an empty string
+      return; // early return
+    }
+
+    // make the AJAX request to OMDBAPI to get list of results
+    fetch(`https://www.ombdapi.com/?s=${searchTerm}&apkey=a7166dbe`).then((response) => {
+      if (response.ok) {
+        // .ok checks response 200-299
+        return response.json();
+      }
+      throw new Error('Request was either a 404 or 500');
+    }).then((data) => {
+      console.log(data); // for now - logs response data
+    }).catch((error) => {
+      console.log(error);
+    })
   }
 
   render() {
-    const { searchTerm, results } = this.state; //ES6 destructuring
+    const { searchTerm, results } = this.state; // ES6 destructuring
 
     return (
       <div className="container">
         <div className="row">
           <div className="col-12">
             <form onSubmt={this.handleSubmit} className="form-inline my-4">
-              <input type="text" className="form-control mr-sm-2" placeholder="frozen" value={searchTerm} onChange={this.handleChange} />
+              <input 
+                type="text" 
+                className="form-control mr-sm-2" 
+                placeholder="frozen" 
+                value={searchTerm} 
+                onChange={this.handleChange} 
+              />
               <button type="submit" className="btn btn-primary">Submit</button>
             </form>
             {results.map((movie) => {
