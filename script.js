@@ -88,13 +88,20 @@ var MovieFinder = function (_React$Component) {
       }
 
       // make the AJAX request to OMDBAPI to get list of results
-      fetch("https://www.omdbapi.com/?s=" + searchTerm + "&apikey=a7166dbe").then(function (response) {
+      // abstract initial check response into a function
+      var checkStatus = function checkStatus(response) {
         if (response.ok) {
-          // .ok checks response 200-299
-          return response.json();
+          // checking for response status 200-299
+          return response;
         }
         throw new Error('Request was either a 404 or 500');
-      }).then(function (data) {
+      };
+
+      var json = function json(response) {
+        return response.json();
+      };
+
+      fetch("https://www.omdbapi.com/?s=" + searchTerm + "&apikey=a7166dbe").then(checkStatus).then(json).then(function (data) {
         // check for False response 
         if (data.Response === 'False') {
           throw new Error(data.Error);

@@ -44,26 +44,35 @@ class MovieFinder extends React.Component {
     }
 
     // make the AJAX request to OMDBAPI to get list of results
-    fetch(`https://www.omdbapi.com/?s=${searchTerm}&apikey=a7166dbe`).then((response) => {
+    // abstract initial check response into a function
+    const checkStatus = (response) => {
       if (response.ok) {
-        // .ok checks response 200-299
-        return response.json();
+        // checking for response status 200-299
+        return response;
       }
       throw new Error('Request was either a 404 or 500');
-    }).then((data) => {
+    }
+
+    const json = (response) => response.json()
+
+    fetch(`https://www.omdbapi.com/?s=${searchTerm}&apikey=a7166dbe`)
+      .then(checkStatus)
+      .then(json)
+      .then(data => {
       // check for False response 
-      if (data.Response === 'False') {
-        throw new Error(data.Error);
-      }
-      // also checking for True response to be extra safe
-      if (data.Response === 'True' && data.Search) {
-        // store the array of movie objects in the component state
-        this.setState({ results: data.Search, error: '' });
-      }
-    }).catch((error) => {
-      this.setState({ error: error.message });
-      console.log(error);
-    })
+        if (data.Response === 'False') {
+          throw new Error(data.Error);
+        }
+        // also checking for True response to be extra safe
+        if (data.Response === 'True' && data.Search) {
+          // store the array of movie objects in the component state
+          this.setState({ results: data.Search, error: '' });
+        }
+      })
+      .catch((error) => {
+        this.setState({ error: error.message });
+        console.log(error);
+      })
   }
 
   render() {
